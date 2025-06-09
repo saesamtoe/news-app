@@ -57,4 +57,5 @@ app.post('/analyze', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`서버 실행됨: http://localhost:${PORT}`);
+  console.log('🧠 OPENAI 키 확인:', process.env.OPENAI_API_KEY);
 });
