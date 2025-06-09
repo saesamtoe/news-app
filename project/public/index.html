@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>오늘의 뉴스 요약</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>📰 오늘의 뉴스 요약</h1>
+    <nav class="menu-bar">
+      <div class="menu-left">
+        <button onclick="showTab('main')">메인</button>
+        <button onclick="showTab('bookmarks')">⭐ 북마크</button>
+      </div>
+      <div class="search-bar">
+        <input id="search-input" type="text" placeholder="검색어를 입력하세요" />
+        <button onclick="searchNews()">검색</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main-tab">
+    <section class="news-section">
+      <h2>📌 한국 뉴스</h2>
+      <div id="newsapi-container" class="news-list"></div>
+    </section>
+    <section class="news-section">
+      <h2>💻 Hacker News</h2>
+      <div id="hackernews-container" class="news-list"></div>
+    </section>
+  </main>
+
+  <main id="bookmarks-tab" style="display: none;">
+    <section class="news-section">
+      <h2>⭐ 저장한 뉴스</h2>
+      <div id="bookmark-container" class="news-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p id="last-updated">업데이트 시간 확인 중...</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
