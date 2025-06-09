@@ -1,4 +1,4 @@
-// server.js (신뢰도 평가 프롬프트 개선 버전)
+// server.js (신뢰도 평가 개선 + description 사용을 위한 app.js 연동 고려 포함)
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
@@ -32,13 +32,18 @@ app.get('/news', async (req, res) => {
 });
 
 app.post('/analyze', async (req, res) => {
-  const { title, content } = req.body;
+  let { title, content, description } = req.body;
 
+  // fallback to description if content is short or missing
   if (!content || content.length < 50) {
-    return res.json({ result: '평가할 수 없음 (내용 부족)' });
+    if (description && description.length >= 50) {
+      content = description;
+    } else {
+      return res.json({ result: '판단 보류 (내용 부족)' });
+    }
   }
 
-  const prompt = `다음은 뉴스 제목과 내용입니다. 이 뉴스의 내용이 얼마나 신뢰할 수 있는지 평가해 주세요.\n- 제목과 내용의 사실성, 출처의 신뢰성, 과장이나 왜곡이 있는지 고려하세요.\n- '높음', '중간', '낮음' 중 하나로 평가한 뒤, 간단한 이유를 함께 알려주세요.\n\n제목: ${title}\n내용: ${content}`;
+  const prompt = `다음 뉴스의 제목과 내용을 고려했을 때, 이 기사는 일반적으로 신뢰할 수 있습니까?\n\n- 제목: ${title}\n- 내용: ${content}\n\n"예" 또는 "아니오"로만 답변하세요.`;
 
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -50,12 +55,12 @@ app.post('/analyze', async (req, res) => {
       body: JSON.stringify({
         model: 'gpt-3.5-turbo',
         messages: [{ role: 'user', content: prompt }],
-        temperature: 0.5
+        temperature: 0.3
       })
     });
 
     const data = await response.json();
-    const result = data.choices?.[0]?.message?.content?.trim() || '평가 실패';
+    const result = data.choices?.[0]?.message?.content?.trim() || '판단 보류';
     res.json({ result });
   } catch (err) {
     res.status(500).json({ error: 'GPT 평가 실패', detail: err.message });
