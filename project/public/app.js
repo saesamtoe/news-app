@@ -10,25 +10,19 @@ if (lastFetched !== today) {
 }
 
 function fetchNews(keyword = '한국') {
-  Promise.all([
-    fetch(`http://localhost:3000/news?q=${encodeURIComponent(keyword)}`).then(res => res.json()),
-    fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
-      .then(res => res.json())
-      .then(ids => Promise.all(ids.slice(0, 5).map(id =>
-        fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(res => res.json())
-      )))
-  ]).then(([newsData, hackerNews]) => {
-    localStorage.setItem('newsapi', JSON.stringify(newsData.articles));
-    localStorage.setItem('hackernews', JSON.stringify(hackerNews));
-    renderNews(newsData.articles, hackerNews);
-  });
+  fetch(`https://news-app-ystt.onrender.com/news?q=${encodeURIComponent(keyword)}`)
+    .then(res => res.json())
+    .then(data => {
+      localStorage.setItem('newsapi', JSON.stringify(data.articles));
+      renderNews(data.articles, []);
+    });
 }
 
 function searchNews() {
   const keyword = document.getElementById('search-input').value.trim();
   if (!keyword) return alert('검색어를 입력해주세요.');
 
-  fetch(`https://news-app-ystt.onrender.com/news?q=한국`)
+  fetch(`https://news-app-ystt.onrender.com/news?q=${encodeURIComponent(keyword)}`)
     .then(res => res.json())
     .then(data => {
       localStorage.setItem('newsapi', JSON.stringify(data.articles));
