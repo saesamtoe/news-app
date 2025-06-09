@@ -1,4 +1,4 @@
-// app.js (GPT 요청 시 description 포함 + 길이 제한 적용)
+// app.js (AI 판단 기능 제거, 검색 기능 복구)
 
 const NEWS_API_KEY = 'YOUR_API_KEY';
 const today = new Date().toISOString().slice(0, 10);
@@ -12,8 +12,8 @@ if (lastFetched !== today) {
   loadFromStorage();
 }
 
-function fetchNews() {
-  fetch(`/news?q=한국`)
+function fetchNews(query = '한국') {
+  fetch(`/news?q=${encodeURIComponent(query)}`)
     .then(res => res.json())
     .then(data => {
       localStorage.setItem('newsapi', JSON.stringify(data.articles));
@@ -29,14 +29,11 @@ function loadFromStorage() {
 function renderNews(newsapiArticles) {
   const container = document.getElementById('newsapi-container');
   container.innerHTML = '';
-  let totalScore = 0;
-  let count = 0;
 
   newsapiArticles.forEach(article => {
     const url = article.url || '';
     const title = article.title || '';
     const description = article.description || '';
-    const content = (article.content || description || '').slice(0, 1000);
 
     const div = document.createElement('div');
     div.className = 'article';
@@ -45,37 +42,13 @@ function renderNews(newsapiArticles) {
     div.innerHTML = `
       ${star}
       <strong>${title}</strong><br>
+      <p>${description}</p>
       <a href="${url}" target="_blank">[원문 보기]</a>
-      <div><button onclick="evaluateCredibility('${encodeURIComponent(title)}', '${encodeURIComponent(content)}', '${encodeURIComponent(description)}', this)">🧠 신뢰도 평가</button></div>
     `;
     container.appendChild(div);
   });
 
   document.getElementById('last-updated').innerText = `마지막 업데이트: ${today}`;
-}
-
-function evaluateCredibility(title, content, description, el) {
-  el.disabled = true;
-  el.innerText = '평가 중...';
-
-  fetch('/analyze', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: decodeURIComponent(title),
-      content: decodeURIComponent(content),
-      description: decodeURIComponent(description)
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      el.innerText = `신뢰도: ${data.result}`;
-      el.disabled = false;
-    })
-    .catch(() => {
-      el.innerText = '평가 실패';
-      el.disabled = false;
-    });
 }
 
 function getBookmarks() {
@@ -115,4 +88,14 @@ function renderBookmarks() {
 function showTab(tab) {
   document.getElementById('main-tab').style.display = (tab === 'main') ? 'block' : 'none';
   document.getElementById('bookmarks-tab').style.display = (tab === 'bookmarks') ? 'block' : 'none';
+  if (tab === 'main') {
+    fetchNews('한국');
+  }
 }
+
+// 검색창 이벤트 복구
+document.getElementById('search-form')?.addEventListener('submit', e => {
+  e.preventDefault();
+  const keyword = document.getElementById('search-input')?.value || '';
+  if (keyword.trim()) fetchNews(keyword);
+});
