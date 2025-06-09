@@ -18,60 +18,39 @@ h1 {
   font-size: 1.8rem;
 }
 
-/* 메뉴와 검색바 정렬 */
-.menu-bar {
+nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   margin-top: 1rem;
-  padding: 0 1rem;
-}
-
-.menu-left {
-  display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
-.search-bar {
+nav button, nav form button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+nav button:hover, nav form button:hover {
+  background: #2980b9;
+}
+
+nav form {
   display: flex;
   gap: 0.5rem;
 }
 
-.search-bar input {
-  padding: 0.6rem;
+nav input {
+  padding: 0.5rem;
   font-size: 1rem;
-  width: 250px;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.search-bar button {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.search-bar button:hover {
-  background: #2980b9;
-}
-
-nav button {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-nav button:hover {
-  background: #2980b9;
 }
 
 main {
@@ -116,6 +95,10 @@ main {
   margin-bottom: 0.5rem;
 }
 
+.article p {
+  margin: 0.2rem 0;
+}
+
 .article a {
   color: #2980b9;
   text-decoration: none;
@@ -152,26 +135,17 @@ footer {
     font-size: 1.5rem;
   }
 
-  .article {
-    padding: 0.8rem;
-  }
-
-  .menu-bar {
+  nav {
     flex-direction: column;
-    align-items: stretch;
     gap: 0.5rem;
   }
 
-  .search-bar {
+  nav form {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
-  .search-bar input {
-    width: 100%;
-  }
-
-  .menu-left {
-    justify-content: center;
+  .article {
+    padding: 0.8rem;
   }
 }

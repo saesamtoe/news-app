@@ -12,25 +12,17 @@
     <nav>
       <button onclick="showTab('main')">메인</button>
       <button onclick="showTab('bookmarks')">⭐ 북마크</button>
-      <input type="text" id="search-input" placeholder="뉴스 검색어 입력" style="padding: 0.5rem; font-size: 1rem;" />
-      <button onclick="searchNews()">🔍 검색</button>
+      <form id="search-form">
+        <input type="text" id="search-input" placeholder="검색어 입력" />
+        <button type="submit">검색</button>
+      </form>
     </nav>
   </header>
 
   <main id="main-tab">
-    <!-- 평균 신뢰도 표시 영역 -->
-    <div id="average-credibility" style="text-align: center; font-weight: bold; margin-bottom: 1rem;">
-      평균 신뢰도: 없음
-    </div>
-
     <section class="news-section">
-      <h2>📌 NewsAPI 주요 뉴스</h2>
+      <h2>🗞️ 최신 뉴스</h2>
       <div id="newsapi-container" class="news-list"></div>
-    </section>
-
-    <section class="news-section">
-      <h2>💻 Hacker News</h2>
-      <div id="hackernews-container" class="news-list"></div>
     </section>
   </main>
 
