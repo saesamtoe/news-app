@@ -1,4 +1,4 @@
-// server.js (신뢰도 평가 개선 + description 사용을 위한 app.js 연동 고려 포함)
+// server.js (신뢰도 평가 개선 + description 사용 + 내용 길이 제한)
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
@@ -42,6 +42,9 @@ app.post('/analyze', async (req, res) => {
       return res.json({ result: '판단 보류 (내용 부족)' });
     }
   }
+
+  // 길이 제한 적용
+  content = content.slice(0, 1000);
 
   const prompt = `다음 뉴스의 제목과 내용을 고려했을 때, 이 기사는 일반적으로 신뢰할 수 있습니까?\n\n- 제목: ${title}\n- 내용: ${content}\n\n"예" 또는 "아니오"로만 답변하세요.`;
 
