@@ -1,4 +1,4 @@
-// app.js (AI 판단 기능 제거, 검색 기능 복구)
+// app.js (검색 기능 복구 + 신뢰도 표시)
 
 const NEWS_API_KEY = 'YOUR_API_KEY';
 const today = new Date().toISOString().slice(0, 10);
@@ -39,16 +39,35 @@ function renderNews(newsapiArticles) {
     div.className = 'article';
 
     const star = `<span class="bookmark-btn" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
+
+    const trustScore = getTrustScore(url, description);
+    const trustText = ['❌ 낮음', '⚠️ 중간', '✅ 높음'][Math.min(2, Math.floor((trustScore - 1) / 2))];
+
     div.innerHTML = `
       ${star}
       <strong>${title}</strong><br>
       <p>${description}</p>
+      <p><strong>신뢰도: ${trustScore}점 (${trustText})</strong></p>
       <a href="${url}" target="_blank">[원문 보기]</a>
     `;
     container.appendChild(div);
   });
 
   document.getElementById('last-updated').innerText = `마지막 업데이트: ${today}`;
+}
+
+function getTrustScore(url, text) {
+  const domain = new URL(url).hostname;
+  const domainScores = {
+    'news.joins.com': 5,
+    'www.hani.co.kr': 5,
+    'www.khan.co.kr': 4,
+    'www.donga.com': 4
+  };
+  const base = domainScores[domain] || 2;
+  const len = (text || '').length;
+  const lenScore = len > 1000 ? 3 : len > 300 ? 2 : 1;
+  return Math.min(5, base + lenScore - 2); // 점수 범위 1~5
 }
 
 function getBookmarks() {
@@ -93,9 +112,13 @@ function showTab(tab) {
   }
 }
 
-// 검색창 이벤트 복구
-document.getElementById('search-form')?.addEventListener('submit', e => {
-  e.preventDefault();
-  const keyword = document.getElementById('search-input')?.value || '';
-  if (keyword.trim()) fetchNews(keyword);
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('search-form');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const keyword = document.getElementById('search-input')?.value || '';
+      if (keyword.trim()) fetchNews(keyword);
+    });
+  }
 });
