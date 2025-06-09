@@ -28,7 +28,7 @@ function searchNews() {
   const keyword = document.getElementById('search-input').value.trim();
   if (!keyword) return alert('검색어를 입력해주세요.');
 
-  fetch(`http://localhost:3000/news?q=${encodeURIComponent(keyword)}`)
+  fetch(`https://news-app-ystt.onrender.com/news?q=한국`)
     .then(res => res.json())
     .then(data => {
       localStorage.setItem('newsapi', JSON.stringify(data.articles));
