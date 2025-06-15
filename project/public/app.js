@@ -1,6 +1,3 @@
-// app.js (검색 기능 복구 + 신뢰도 표시)
-
-const NEWS_API_KEY = 'YOUR_API_KEY';
 const today = new Date().toISOString().slice(0, 10);
 const bookmarkKey = 'bookmarkedNews';
 
@@ -38,16 +35,15 @@ function renderNews(newsapiArticles) {
     const div = document.createElement('div');
     div.className = 'article';
 
-    const star = `<span class="bookmark-btn" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
+    const star = `<span class="bookmark-btn ${isBookmarked(url) ? 'active' : ''}" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
 
-    const trustScore = getTrustScore(url, description);
-    const trustText = ['❌ 낮음', '⚠️ 중간', '✅ 높음'][Math.min(2, Math.floor((trustScore - 1) / 2))];
+    const trustLabel = getTrustLabel(getTrustScore(url, description));
 
     div.innerHTML = `
       ${star}
       <strong>${title}</strong><br>
       <p>${description}</p>
-      <p><strong>신뢰도: ${trustScore}점 (${trustText})</strong></p>
+      <p><strong>신뢰도: ${trustLabel}</strong></p>
       <a href="${url}" target="_blank">[원문 보기]</a>
     `;
     container.appendChild(div);
@@ -67,7 +63,17 @@ function getTrustScore(url, text) {
   const base = domainScores[domain] || 2;
   const len = (text || '').length;
   const lenScore = len > 1000 ? 3 : len > 300 ? 2 : 1;
-  return Math.min(5, base + lenScore - 2); // 점수 범위 1~5
+  return Math.min(5, base + lenScore - 2);
+}
+
+function getTrustLabel(score) {
+  if (score >= 4) return '✅ 높음';
+  if (score >= 2.5) return '⚠️ 보통';
+  return '❌ 낮음';
+}
+
+function isBookmarked(url) {
+  return getBookmarks().some(b => b.url === url);
 }
 
 function getBookmarks() {

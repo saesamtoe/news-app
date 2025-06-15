@@ -27,7 +27,7 @@ nav {
   gap: 1rem;
 }
 
-nav button, nav form button {
+nav button {
   background: #3498db;
   color: white;
   border: none;
@@ -37,20 +37,42 @@ nav button, nav form button {
   cursor: pointer;
 }
 
-nav button:hover, nav form button:hover {
+nav button:hover {
   background: #2980b9;
 }
 
-nav form {
+/* 검색바 wrapper */
+.search-bar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.search-bar-wrapper form {
   display: flex;
   gap: 0.5rem;
 }
 
-nav input {
+.search-bar-wrapper input {
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
   border: 1px solid #ccc;
+  width: 250px;
+}
+
+.search-bar-wrapper button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-bar-wrapper button:hover {
+  background: #2980b9;
 }
 
 main {
@@ -130,6 +152,7 @@ footer {
   border-top: 1px solid #ddd;
 }
 
+/* 반응형 디자인 */
 @media (max-width: 600px) {
   h1 {
     font-size: 1.5rem;
@@ -140,12 +163,16 @@ footer {
     gap: 0.5rem;
   }
 
-  nav form {
+  .search-bar-wrapper form {
     flex-direction: column;
     align-items: stretch;
   }
 
   .article {
     padding: 0.8rem;
+  }
+
+  .search-bar-wrapper input {
+    width: 100%;
   }
 }

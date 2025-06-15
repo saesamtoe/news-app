@@ -9,14 +9,18 @@
 <body>
   <header>
     <h1>📰 오늘의 뉴스 요약</h1>
+    
     <nav>
       <button onclick="showTab('main')">메인</button>
       <button onclick="showTab('bookmarks')">⭐ 북마크</button>
+    </nav>
+
+    <div class="search-bar-wrapper">
       <form id="search-form">
         <input type="text" id="search-input" placeholder="검색어 입력" />
         <button type="submit">검색</button>
       </form>
-    </nav>
+    </div>
   </header>
 
   <main id="main-tab">
