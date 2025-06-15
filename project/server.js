@@ -1,22 +1,19 @@
-// server.js
+// server.js (OpenAI v4 적용 + 이미지 카테고리 분석 포함)
 const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.NEWS_API_KEY;
-const openai = new OpenAIApi(new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-}));
-
-const upload = multer({ dest: 'uploads/' });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 // 뉴스 API 프록시
 app.get('/news', async (req, res) => {
@@ -31,31 +28,28 @@ app.get('/news', async (req, res) => {
   }
 });
 
-// 이미지 분류 API
-app.post('/classify-image', upload.single('image'), async (req, res) => {
-  try {
-    const imagePath = req.file.path;
-    const imageBuffer = fs.readFileSync(imagePath);
-    const base64Image = imageBuffer.toString('base64');
+// 이미지 업로드용 폴더
+const upload = multer({ dest: 'uploads/' });
 
-    const response = await openai.createChatCompletion({
-      model: "gpt-4o",
-      messages: [
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "이 이미지의 주제를 짧게 분류해주세요. (예: 뉴스, 음식, 동물 등)" },
-            { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64Image}` } }
-          ],
-        },
-      ],
+// 이미지 카테고리 분석
+app.post('/analyze-image', upload.single('image'), async (req, res) => {
+  try {
+    const filePath = req.file.path;
+    const imageData = fs.readFileSync(filePath);
+
+    const response = await openai.images.createVariation({
+      image: imageData,
+      n: 1,
+      size: "256x256"
     });
 
-    fs.unlinkSync(imagePath); // 임시 이미지 삭제
-    res.json({ category: response.data.choices[0].message.content });
+    // 향후 이미지 분류 API나 모델 연결 가능
+    res.json({ category: '분류 모델 미연결', preview: response.data[0]?.url });
+
+    fs.unlinkSync(filePath);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "이미지 분류 실패" });
+    console.error('이미지 분석 실패:', err);
+    res.status(500).json({ error: '이미지 분석 실패' });
   }
 });
 
