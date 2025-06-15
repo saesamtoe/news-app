@@ -1,5 +1,4 @@
-// app.js (최신버전: 이미지 추출, 검색 복구, 신뢰도 높음/보통/낮음 표시)
-
+// app.js
 const today = new Date().toISOString().slice(0, 10);
 const bookmarkKey = 'bookmarkedNews';
 
@@ -33,23 +32,19 @@ function renderNews(newsapiArticles) {
     const url = article.url || '';
     const title = article.title || '';
     const description = article.description || '';
+    const imageUrl = article.urlToImage || '';
 
     const div = document.createElement('div');
     div.className = 'article';
 
     const star = `<span class="bookmark-btn" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
 
-    const trustScore = getTrustScore(url, description);
-    const trustText = trustScore >= 4 ? '✅ 높음' : trustScore >= 3 ? '⚠️ 보통' : '❌ 낮음';
-
-    const imageUrlMatch = article.content?.match(/<img[^>]+src=\"([^">]+)\"/i);
-    const imageUrl = article.urlToImage || imageUrlMatch?.[1] || '';
-    const imageTag = imageUrl ? `<img src="${imageUrl}" class="article-image">` : '';
+    const trustText = getTrustLabel(url, description);
 
     div.innerHTML = `
       ${star}
+      <img src="${imageUrl}" alt="thumbnail" class="news-thumbnail" onerror="this.style.display='none'"/>
       <strong>${title}</strong><br>
-      ${imageTag}
       <p>${description}</p>
       <p><strong>신뢰도: ${trustText}</strong></p>
       <a href="${url}" target="_blank">[원문 보기]</a>
@@ -60,18 +55,15 @@ function renderNews(newsapiArticles) {
   document.getElementById('last-updated').innerText = `마지막 업데이트: ${today}`;
 }
 
-function getTrustScore(url, text) {
+function getTrustLabel(url, text) {
   const domain = new URL(url).hostname;
   const domainScores = {
-    'news.joins.com': 5,
-    'www.hani.co.kr': 5,
-    'www.khan.co.kr': 4,
-    'www.donga.com': 4
+    'news.joins.com': '높음',
+    'www.hani.co.kr': '높음',
+    'www.khan.co.kr': '보통',
+    'www.donga.com': '보통'
   };
-  const base = domainScores[domain] || 2;
-  const len = (text || '').length;
-  const lenScore = len > 1000 ? 3 : len > 300 ? 2 : 1;
-  return Math.min(5, base + lenScore - 2);
+  return domainScores[domain] || '낮음';
 }
 
 function getBookmarks() {
