@@ -1,7 +1,7 @@
 {
   "name": "news-app",
   "version": "1.0.0",
-  "description": "한국 뉴스 요약 앱 with 프록시 서버",
+  "description": "한국 뉴스 요약 앱 (프록시 서버 + 이미지 추출 + 신뢰도 분류 포함)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -9,11 +9,20 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "node-fetch": "^2.6.7",
-    "multer": "^1.4.4",
-    "openai": "^4.27.0"
+    "node-fetch": "^2.6.7"
   },
   "engines": {
     "node": "^18.x"
-  }
+  },
+  "keywords": [
+    "news",
+    "summary",
+    "express",
+    "proxy",
+    "nodejs",
+    "openapi",
+    "한국뉴스"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }

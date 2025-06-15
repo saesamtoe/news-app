@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>오늘의 뉴스 요약</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -11,7 +11,7 @@
     <h1>📰 오늘의 뉴스 요약</h1>
     <nav>
       <button onclick="showTab('main')">메인</button>
-      <button onclick="showTab('bookmarks')">⭐ 북마크</button>
+      <button onclick="showTab('bookmarks')">⭐ 보관마트</button>
       <form id="search-form">
         <input type="text" id="search-input" placeholder="검색어 입력" />
         <button type="submit">검색</button>
@@ -21,17 +21,8 @@
 
   <main id="main-tab">
     <section class="news-section">
-      <h2>🗞️ 최신 뉴스</h2>
+      <h2>🗳️ 참고 뉴스</h2>
       <div id="newsapi-container" class="news-list"></div>
-    </section>
-
-    <section class="upload-section">
-      <h2>🖼️ 이미지 카테고리 분류</h2>
-      <form id="image-upload-form">
-        <input type="file" id="image-input" accept="image/*" required />
-        <button type="submit">분류 요청</button>
-      </form>
-      <p id="category-result"></p>
     </section>
   </main>
 

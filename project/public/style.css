@@ -27,7 +27,8 @@ nav {
   gap: 1rem;
 }
 
-nav button, nav form button {
+nav button,
+nav form button {
   background: #3498db;
   color: white;
   border: none;
@@ -37,7 +38,8 @@ nav button, nav form button {
   cursor: pointer;
 }
 
-nav button:hover, nav form button:hover {
+nav button:hover,
+nav form button:hover {
   background: #2980b9;
 }
 
@@ -59,11 +61,11 @@ main {
   padding: 0 1rem;
 }
 
-.news-section, .upload-section {
+.news-section {
   margin-bottom: 2rem;
 }
 
-.news-section h2, .upload-section h2 {
+.news-section h2 {
   border-left: 4px solid #2980b9;
   padding-left: 10px;
   font-size: 1.4rem;
@@ -80,7 +82,7 @@ main {
   background: #fff;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s;
   position: relative;
 }
@@ -121,6 +123,14 @@ main {
   color: gold;
 }
 
+.article-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+}
+
 footer {
   text-align: center;
   font-size: 0.9rem;
@@ -147,5 +157,9 @@ footer {
 
   .article {
     padding: 0.8rem;
+  }
+
+  .article-image {
+    max-height: 150px;
   }
 }

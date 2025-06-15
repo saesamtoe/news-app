@@ -1,4 +1,4 @@
-// app.js (신뢰도 등급 + 이미지 카테고리 기능 포함)
+// app.js (최신버전: 이미지 추출, 검색 복구, 신뢰도 높음/보통/낮음 표시)
 
 const today = new Date().toISOString().slice(0, 10);
 const bookmarkKey = 'bookmarkedNews';
@@ -33,7 +33,6 @@ function renderNews(newsapiArticles) {
     const url = article.url || '';
     const title = article.title || '';
     const description = article.description || '';
-    const imageUrl = article.urlToImage || '';
 
     const div = document.createElement('div');
     div.className = 'article';
@@ -41,19 +40,20 @@ function renderNews(newsapiArticles) {
     const star = `<span class="bookmark-btn" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
 
     const trustScore = getTrustScore(url, description);
-    const trustLevel = ['낮음 ❌', '보통 ⚠️', '높음 ✅'][Math.min(2, Math.floor((trustScore - 1) / 2))];
-    const imageLabel = classifyImageCategory(imageUrl);
+    const trustText = trustScore >= 4 ? '✅ 높음' : trustScore >= 3 ? '⚠️ 보통' : '❌ 낮음';
+
+    const imageUrlMatch = article.content?.match(/<img[^>]+src=\"([^">]+)\"/i);
+    const imageUrl = article.urlToImage || imageUrlMatch?.[1] || '';
+    const imageTag = imageUrl ? `<img src="${imageUrl}" class="article-image">` : '';
 
     div.innerHTML = `
       ${star}
-      <strong>${title}</strong>
+      <strong>${title}</strong><br>
+      ${imageTag}
       <p>${description}</p>
-      ${imageUrl ? `<img src="${imageUrl}" alt="news image" class="news-image"/>` : ''}
-      <p><strong>신뢰도: ${trustLevel}</strong></p>
-      ${imageUrl ? `<p><strong>이미지 분류: ${imageLabel}</strong></p>` : ''}
+      <p><strong>신뢰도: ${trustText}</strong></p>
       <a href="${url}" target="_blank">[원문 보기]</a>
     `;
-
     container.appendChild(div);
   });
 
@@ -72,16 +72,6 @@ function getTrustScore(url, text) {
   const len = (text || '').length;
   const lenScore = len > 1000 ? 3 : len > 300 ? 2 : 1;
   return Math.min(5, base + lenScore - 2);
-}
-
-function classifyImageCategory(imageUrl) {
-  if (!imageUrl) return '없음';
-  const lowered = imageUrl.toLowerCase();
-  if (lowered.includes('sports')) return '스포츠';
-  if (lowered.includes('politics')) return '정치';
-  if (lowered.includes('entertain')) return '연예';
-  if (lowered.includes('economy') || lowered.includes('finance')) return '경제';
-  return '기타';
 }
 
 function getBookmarks() {
