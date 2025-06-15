@@ -22,14 +22,23 @@
   <main id="main-tab">
     <section class="news-section">
       <h2>🗞️ 최신 뉴스</h2>
-      <div id="newsapi-container" class="news-grid"></div>
+      <div id="newsapi-container" class="news-list"></div>
+    </section>
+
+    <section class="upload-section">
+      <h2>🖼️ 이미지 카테고리 분류</h2>
+      <form id="image-upload-form">
+        <input type="file" id="image-input" accept="image/*" required />
+        <button type="submit">분류 요청</button>
+      </form>
+      <p id="category-result"></p>
     </section>
   </main>
 
   <main id="bookmarks-tab" style="display: none;">
     <section class="news-section">
       <h2>⭐ 저장한 뉴스</h2>
-      <div id="bookmark-container" class="news-grid"></div>
+      <div id="bookmark-container" class="news-list"></div>
     </section>
   </main>
 
