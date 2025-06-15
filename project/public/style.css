@@ -27,7 +27,7 @@ nav {
   gap: 1rem;
 }
 
-nav button {
+nav button, nav form button {
   background: #3498db;
   color: white;
   border: none;
@@ -37,46 +37,24 @@ nav button {
   cursor: pointer;
 }
 
-nav button:hover {
+nav button:hover, nav form button:hover {
   background: #2980b9;
 }
 
-/* 검색바 wrapper */
-.search-bar-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.search-bar-wrapper form {
+nav form {
   display: flex;
   gap: 0.5rem;
 }
 
-.search-bar-wrapper input {
+nav input {
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 4px;
   border: 1px solid #ccc;
-  width: 250px;
-}
-
-.search-bar-wrapper button {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.search-bar-wrapper button:hover {
-  background: #2980b9;
 }
 
 main {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -92,10 +70,10 @@ main {
   margin-bottom: 1rem;
 }
 
-.news-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .article {
@@ -105,6 +83,9 @@ main {
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   transition: transform 0.2s;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .article:hover {
@@ -124,6 +105,8 @@ main {
 .article a {
   color: #2980b9;
   text-decoration: none;
+  margin-top: auto;
+  font-weight: bold;
 }
 
 .article a:hover {
@@ -152,7 +135,6 @@ footer {
   border-top: 1px solid #ddd;
 }
 
-/* 반응형 디자인 */
 @media (max-width: 600px) {
   h1 {
     font-size: 1.5rem;
@@ -163,16 +145,12 @@ footer {
     gap: 0.5rem;
   }
 
-  .search-bar-wrapper form {
+  nav form {
     flex-direction: column;
     align-items: stretch;
   }
 
   .article {
     padding: 0.8rem;
-  }
-
-  .search-bar-wrapper input {
-    width: 100%;
   }
 }

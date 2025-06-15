@@ -9,31 +9,27 @@
 <body>
   <header>
     <h1>📰 오늘의 뉴스 요약</h1>
-    
     <nav>
       <button onclick="showTab('main')">메인</button>
       <button onclick="showTab('bookmarks')">⭐ 북마크</button>
-    </nav>
-
-    <div class="search-bar-wrapper">
       <form id="search-form">
         <input type="text" id="search-input" placeholder="검색어 입력" />
         <button type="submit">검색</button>
       </form>
-    </div>
+    </nav>
   </header>
 
   <main id="main-tab">
     <section class="news-section">
       <h2>🗞️ 최신 뉴스</h2>
-      <div id="newsapi-container" class="news-list"></div>
+      <div id="newsapi-container" class="news-grid"></div>
     </section>
   </main>
 
   <main id="bookmarks-tab" style="display: none;">
     <section class="news-section">
       <h2>⭐ 저장한 뉴스</h2>
-      <div id="bookmark-container" class="news-list"></div>
+      <div id="bookmark-container" class="news-grid"></div>
     </section>
   </main>
 
