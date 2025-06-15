@@ -1,4 +1,4 @@
-// app.js
+// ✅ app.js
 const today = new Date().toISOString().slice(0, 10);
 const bookmarkKey = 'bookmarkedNews';
 
@@ -38,7 +38,6 @@ function renderNews(newsapiArticles) {
     div.className = 'article';
 
     const star = `<span class="bookmark-btn" onclick="toggleBookmark('${encodeURIComponent(url)}', '${encodeURIComponent(title)}', this)">★</span>`;
-
     const trustText = getTrustLabel(url, description);
 
     div.innerHTML = `
@@ -117,4 +116,5 @@ document.addEventListener('DOMContentLoaded', () => {
       if (keyword.trim()) fetchNews(keyword);
     });
   }
+  renderBookmarks(); // ✅ 북마크 초기 로딩
 });
