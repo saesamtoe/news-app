@@ -84,9 +84,6 @@ main {
   transition: transform 0.2s;
   position: relative;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
 }
 
 .article:hover {
@@ -96,7 +93,7 @@ main {
 .article strong {
   display: block;
   font-size: 1.1rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 .article p {
@@ -112,14 +109,6 @@ main {
   text-decoration: underline;
 }
 
-.article img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-top: 0.5rem;
-  object-fit: cover;
-}
-
 .bookmark-btn {
   position: absolute;
   top: 1rem;
@@ -127,10 +116,19 @@ main {
   font-size: 1.4rem;
   color: #aaa;
   cursor: pointer;
+  z-index: 2; /* 이미지 위로 */
 }
 
 .bookmark-btn.active {
   color: gold;
+}
+
+.news-thumbnail {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
 footer {
@@ -159,10 +157,5 @@ footer {
 
   .article {
     padding: 0.8rem;
-  }
-
-  .article img {
-    width: 100%;
-    height: auto;
   }
 }
